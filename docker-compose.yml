@@ -1,0 +1,38 @@
+services:
+  laravel_php84:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: laravel_server_php84
+    volumes:
+      - ./projects:/var/www/projects  # Monta la carpeta de proyectos en /var/www/projects
+      - ./docker/apache/sites:/etc/apache2/sites-available  # VirtualHosts de Apache
+    expose:
+      - "80"  # Exponer Apache solo dentro de Docker (sin publicarlo en la máquina)
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - mariadb_php84
+    networks:
+      - laravel_network  # Se conecta a la red compartida con el nuevo Proxy
+
+  mariadb_php84:
+    image: mariadb:10.6
+    container_name: laravel_mariadb_php84
+    restart: always
+    ports:
+      - "3308:3306"  # Exponer MariaDB en 3308 para evitar conflictos
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db_data_php84:/var/lib/mysql
+    networks:
+      - laravel_network  # Se conecta a la red compartida
+
+volumes:
+  db_data_php84:
+
+networks:
+  laravel_network:
+    external: true  # Usa la misma red del proxy
