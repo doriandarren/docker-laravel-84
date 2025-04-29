@@ -3,6 +3,7 @@ FROM php:8.4-apache
 
 # Actualizar paquetes e instalar dependencias esenciales y extensiones
 RUN apt-get update && apt-get install -y \
+    wget \
     mariadb-client \
     git \
     unzip \
@@ -16,12 +17,19 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     xfonts-75dpi \
     xfonts-base \
-    wkhtmltopdf \
     nano \
     supervisor \
     cron \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql mbstring xml bcmath zip
+
+# Instalar wkhtmltopdf patcheado manualmente
+RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz \
+    && tar -xvf wkhtmltox-0.12.4_linux-generic-amd64.tar.xz \
+    && cp wkhtmltox/bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf \
+    && cp wkhtmltox/bin/wkhtmltoimage /usr/local/bin/wkhtmltoimage \
+    && chmod +x /usr/local/bin/wkhtmltopdf /usr/local/bin/wkhtmltoimage \
+    && rm -rf wkhtmltox*
 
 # Crear directorios de logs para Apache y corregir permisos
 RUN mkdir -p /var/log/apache2 && \
