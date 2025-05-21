@@ -18,5 +18,9 @@ yarn-error.log
 /.idea
 .idea
 /.vscode
+/projects/*
+/projects/
 /projects
+projects
 .DS_store
+

@@ -17,6 +17,13 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     xfonts-75dpi \
     xfonts-base \
+    libxrender1 \
+    libxext6 \
+    libfontconfig1 \
+    libfreetype6 \
+    libjpeg62-turbo \
+    libpng-dev \
+    fontconfig \
     nano \
     supervisor \
     cron \
