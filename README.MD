@@ -9,6 +9,10 @@ composer create-project --prefer-dist laravel/laravel proyecto1
 
 
 ```sh
+
+docker compose down                         # Detener el servidor
+docker compose down --remove-orphans        # Detener el servidor
+
 docker compose build --no-cache             # Construir la imagen
 docker compose up -d                        # Levantar el servidor
 docker exec -it laravel_server bash         # Entrar al servidor
